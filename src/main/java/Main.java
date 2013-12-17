@@ -10,8 +10,8 @@ import java.util.HashMap;
  * To change this template use File | Settings | File Templates.
  */
 public class Main {
-    private static  ArrayList<Product> productList = new ArrayList<Product>() ;
-    private static ArrayList<QueryData> queryDataList = new ArrayList<QueryData>();
+    private static  ArrayList<Product> productList = new ArrayList<Product>() ;   //products Table
+    private static ArrayList<QueryData> queryDataList = new ArrayList<QueryData>();  //QueryTable
     private static HashMap<String,ArrayList<Integer>> productIdToProductListIndex = new HashMap<String, ArrayList<Integer>>();
     private static HashMap<String, ArrayList<Integer>> artistToProductListIndex =  new HashMap<String, ArrayList<Integer>>();
     private static HashMap<String, ArrayList<Integer>> productIdToQueryDataIndex = new HashMap<String, ArrayList<Integer>>();
