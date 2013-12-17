@@ -7,11 +7,15 @@ the datastore for which the productId doesnt exist in the products table.
 The code exposes two methods for the queries:
 
  getQuerywiseProductDetails(String query);
- getArtistWiseUniqueQueries(String artist);
+ 
+ getArtistWiseUniqueQueries(String artist);      
  
  (See usage examples in main)
+ 
  The Data files are specified in the resources folder in csv format.
+ 
  ProductData.csv format: ProductId,ProductName,genre,artist
+ 
  QueryData.csv format:ProductId,query,timestamp
  
  
