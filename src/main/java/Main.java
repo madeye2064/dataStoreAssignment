@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,22 +16,11 @@ public class Main {
     private static HashMap<String, ArrayList<Integer>> artistToProductListIndex =  new HashMap<String, ArrayList<Integer>>();
     private static HashMap<String, ArrayList<Integer>> productIdToQueryDataIndex = new HashMap<String, ArrayList<Integer>>();
     private static HashMap<String, ArrayList<Integer>> queryToQueryDataIndex = new HashMap<String, ArrayList<Integer>>();
-    public static void main(String[] args) {
-        addProduct("1","Shirt","formals","swati");
-        addProduct("2","t-shirt","casuals","vishakha");
-        addProduct("3","skirt","formals","swati");
-        addProduct("4","jeans","casuals","vishakha");
-        addProduct("5","bedSheets","home decor","vishal");
-        addProduct("5","coats","formals","vishal");
-        addQueryData("1", "formal clothes", "010101");
-        addQueryData("3","formal clothes","020202");
-        addQueryData("2","casuals","0101010");
-        addQueryData("4","casuals","020202");
-        addQueryData("1","all clothes","010101");
-        addQueryData("2","all clothes","010101");
-        addQueryData("3","all clothes","010101");
-        addQueryData("4","all clothes","010101");
-        addQueryData("6","coats","9127412");
+    public static void main(String[] args) throws IOException {
+        String currentDirectory = new File("").getAbsolutePath();
+        new Main().readProductData("productData.csv");
+        new Main().readQueryData("QueryData.csv");
+
         System.out.println("all clothes products:");
         getQuerywiseProductDetails("all clothes");
         System.out.println("\nsavadv products: ");
@@ -48,7 +38,42 @@ public class Main {
 
     }
 
-    private static void updateProducIDIndexOnQueryData(int i) {
+    private  void readQueryData(String filePath) throws IOException {
+        FileInputStream fstream = new FileInputStream(String.valueOf(getClass().getResource("queryData.csv").getPath()));
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String strLine;
+        while ((strLine = br.readLine()) != null){
+            if(strLine == null) continue;
+            String[] params = strLine.split(",");
+            if(params.length!=3) {
+                System.out.println("Invalid Input: "+ strLine);
+                continue;
+            }
+            addQueryData(params[0], params[1], params[2]);
+        }
+        in.close();
+
+    }
+
+    private void readProductData(String filePath) throws IOException {
+        FileInputStream fstream = new FileInputStream(String.valueOf(getClass().getResource(filePath).getPath()));
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String strLine;
+        while ((strLine = br.readLine()) != null){
+           if(strLine == null) continue;
+           String[] params = strLine.split(",");
+           if(params.length!=4) {
+               System.out.println("Invalid Input");
+               continue;
+           }
+           addProduct(params[0], params[1], params[2], params[3]);
+        }
+        in.close();
+    }
+
+    private static void updateProductIDIndexOnQueryData(int i) {
         QueryData  queryData  = queryDataList.get(i);
         String productId = queryData.getProductId();
         if(!productIdToQueryDataIndex.containsKey(productId)) {
@@ -113,7 +138,7 @@ public class Main {
         q.setTimestamp(timestamp);
         int i = queryDataList.size();
         queryDataList.add(q);
-        updateProducIDIndexOnQueryData(i);
+        updateProductIDIndexOnQueryData(i);
         updateQueryIndex(i);
     }
 
